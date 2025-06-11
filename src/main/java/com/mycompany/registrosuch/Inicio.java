@@ -8,17 +8,17 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 
-
 /**
  *
  * @author nincy
  */
 public class Inicio extends javax.swing.JFrame {
     
-     
+     public File Cseleccion;
 
     public Inicio() {
         initComponents();
+       menu.setVisible(false);
     }
     /**
      * Creates new form Inicio
@@ -34,21 +34,44 @@ public class Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        seleccion = new javax.swing.JButton();
         salir = new javax.swing.JButton();
+        menu = new javax.swing.JPanel();
+        multas = new javax.swing.JButton();
+        traspaso = new javax.swing.JButton();
+        vehiculos = new javax.swing.JButton();
+        seleccion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusCycleRoot(false);
 
         jLabel1.setFont(new java.awt.Font("Rockwell", 3, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("SISTEMA VEHICULAR SUCHITEPEQUEZ");
+        jLabel1.setText("SISTEMA VEHICULAR");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        salir.setText("Salir");
+        salir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        multas.setText("Multas");
+        multas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                multasActionPerformed(evt);
+            }
+        });
+
+        traspaso.setText("Traspasos");
+
+        vehiculos.setText("Vehiculos");
+        vehiculos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vehiculosActionPerformed(evt);
+            }
+        });
 
         seleccion.setText("Buscar Carpeta");
         seleccion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -58,31 +81,35 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
-        salir.setText("Salir");
-        salir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
-                        .addComponent(seleccion))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
-                        .addComponent(salir)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        javax.swing.GroupLayout menuLayout = new javax.swing.GroupLayout(menu);
+        menu.setLayout(menuLayout);
+        menuLayout.setHorizontalGroup(
+            menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuLayout.createSequentialGroup()
+                .addGap(195, 195, 195)
+                .addComponent(vehiculos)
+                .addContainerGap(200, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(seleccion)
+                    .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(multas)
+                        .addComponent(traspaso)))
+                .addGap(200, 200, 200))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+        menuLayout.setVerticalGroup(
+            menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuLayout.createSequentialGroup()
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addComponent(seleccion)
-                .addGap(65, 65, 65)
-                .addComponent(salir)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(multas)
+                .addGap(35, 35, 35)
+                .addComponent(traspaso)
+                .addGap(35, 35, 35)
+                .addComponent(vehiculos)
+                .addGap(24, 24, 24))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -90,25 +117,34 @@ public class Inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel2)
-                .addContainerGap(533, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 22, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(507, 507, 507)
+                        .addComponent(salir)))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel2)
-                .addGap(14, 14, 14)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(51, 51, 51)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(281, 281, 281))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(salir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 58, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,28 +158,30 @@ public class Inicio extends javax.swing.JFrame {
         int folderResult = folderChooser.showOpenDialog(this);
         
         if (folderResult == JFileChooser.APPROVE_OPTION) {
-            File carpetaSeleccionada = folderChooser.getSelectedFile();
-            System.out.println("Carpeta seleccionada: " + carpetaSeleccionada.getAbsolutePath());
+        Cseleccion = folderChooser.getSelectedFile();
             
             seleccion.setVisible(false);
             salir.setVisible(false);
+            
+            menu.setVisible(true);
 
-            // seleccionar archivo .txt dentro de esa carpeta
-            JFileChooser fileChooser = new JFileChooser(carpetaSeleccionada);
-            fileChooser.setDialogTitle("Selecciona un archivo de texto");
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de texto", "txt"));
-
-            int fileResult = fileChooser.showOpenDialog(this);
-
-            if (fileResult == JFileChooser.APPROVE_OPTION) {
-                File archivoSeleccionado = fileChooser.getSelectedFile();
-                System.out.println("Archivo seleccionado: " + archivoSeleccionado.getAbsolutePath());
-
-            }
+      
         }
     }//GEN-LAST:event_seleccionActionPerformed
 
+    private void multasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multasActionPerformed
+       if (Cseleccion !=null){
+        Multas a = new Multas(Cseleccion);
+       a.setVisible(true);
+       this.setVisible(false);
+       }
+    }//GEN-LAST:event_multasActionPerformed
+
+    private void vehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_vehiculosActionPerformed
+
+    
     
     public static void main(String args[]) {
         try {
@@ -165,8 +203,12 @@ public class Inicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPanel menu;
+    private javax.swing.JButton multas;
     private javax.swing.JButton salir;
     private javax.swing.JButton seleccion;
+    private javax.swing.JButton traspaso;
+    private javax.swing.JButton vehiculos;
     // End of variables declaration//GEN-END:variables
 }

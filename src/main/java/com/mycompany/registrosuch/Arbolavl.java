@@ -12,17 +12,19 @@ public class Arbolavl {
     
     private Nodoavl raiz;
 
-    public void insertar(String depto, String placa, String fecha, String descripcion, int monto) {
-        raiz = insertarRec(raiz, depto, placa, fecha, descripcion, monto);
-    }
+    public void insertar(String depto, String placa, String dpi, String nombre,
+                         String marca, String modelov, String anio, String multas, String traspasos) {
+        raiz = insertarRec(raiz, depto, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
+   }
 
-    private Nodoavl insertarRec(Nodoavl nodo, String depto, String placa, String fecha, String descripcion, int monto) {
-        if (nodo == null) return new Nodoavl(depto, placa, fecha, descripcion, monto);
+    private Nodoavl insertarRec(Nodoavl nodo, String depto, String placa, String dpi, String nombre,
+                                 String marca, String modelo, String anio, String multas, String traspasos) {
+        if (nodo == null) return new Nodoavl(depto, placa, dpi, nombre, marca, modelo, anio, multas, traspasos);
 
         if (placa.compareTo(nodo.placa) < 0) {
-            nodo.izquierda = insertarRec(nodo.izquierda, depto, placa, fecha, descripcion, monto);
+            nodo.izquierda = insertarRec(nodo.izquierda, depto, placa, dpi, nombre, marca, modelo, anio, multas, traspasos);
         } else {
-            nodo.derecha = insertarRec(nodo.derecha, depto, placa, fecha, descripcion, monto);
+            nodo.derecha = insertarRec(nodo.derecha, depto, placa, dpi, nombre, marca, modelo, anio, multas, traspasos);
         }
 
         actualizarAltura(nodo);
@@ -66,9 +68,13 @@ public class Arbolavl {
                 Nodoavl sucesor = encontrarMinimo(nodo.derecha);
                 nodo.placa = sucesor.placa;
                 nodo.departamento = sucesor.departamento;
-                nodo.fecha = sucesor.fecha;
-                nodo.descripcion = sucesor.descripcion;
-                nodo.monto = sucesor.monto;
+                nodo.dpi = sucesor.dpi;
+                nodo.nombre = sucesor.nombre;
+                nodo.marca = sucesor.marca;
+                nodo.modelo = sucesor.modelo;
+                nodo.anio = sucesor.anio;
+                nodo.multas = sucesor.multas;
+                nodo.traspasos = sucesor.traspasos;
                 nodo.derecha = eliminarRec(nodo.derecha, sucesor.placa);
             }
         }
@@ -143,7 +149,7 @@ public class Arbolavl {
     public void inOrden(Nodoavl nodo, ArrayList<String[]> lista) {
         if (nodo != null) {
             inOrden(nodo.izquierda, lista);
-            lista.add(new String[]{nodo.departamento, nodo.placa, nodo.fecha, nodo.descripcion, String.valueOf(nodo.monto)});
+            lista.add(new String[]{nodo.departamento, nodo.placa, nodo.dpi, nodo.nombre, nodo.marca, nodo.modelo, nodo.anio, nodo.multas, nodo.traspasos});
             inOrden(nodo.derecha, lista);
         }
     }

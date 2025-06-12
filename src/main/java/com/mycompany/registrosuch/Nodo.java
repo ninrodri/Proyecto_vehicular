@@ -9,16 +9,22 @@ package com.mycompany.registrosuch;
  * @author nincy
  */
 public class Nodo {
- 
-   String departamento, placa, fecha, descripcion;
-    int monto;
+  String departamento, placa, dpi, nombre, marca, modelo, anio, multas, traspasos;
     Nodo izq, der;
 
-    public Nodo(String departamento, String placa, String fecha, String descripcion, int monto) {
+    public Nodo(String departamento, String placa, String dpi, String nombre,
+                String marca, String modelo, String anio, String multas, String traspasos) {
         this.departamento = departamento;
         this.placa = placa;
-        this.fecha = fecha;
-        this.descripcion = descripcion;
-        this.monto = monto;
+        this.dpi = dpi;
+        this.nombre = nombre;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.anio = anio;
+        this.multas = multas;
+        this.traspasos = traspasos;
+        this.izq = null;
+        this.der = null;
     }
+    
 }

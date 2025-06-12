@@ -47,40 +47,67 @@ public class Multas extends javax.swing.JFrame {
         modelo.setColumnCount(0);
         modelo.addColumn("Departamento");
         modelo.addColumn("Placa");
-        modelo.addColumn("Fecha");
-        modelo.addColumn("Descripción");
-        modelo.addColumn("Monto");
+        modelo.addColumn("DPI");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Marca");
+        modelo.addColumn("Modelo");
+        modelo.addColumn("Año");
+        modelo.addColumn("Multas");
+        modelo.addColumn("Traspasos");
     }
 
     private void cargarDesdeArchivosABB() throws FileNotFoundException {
+    configurarTablaVacia();               // limpia y define columnas
     long inicio = System.nanoTime();
-    File[] subcarpetas = carpeta.listFiles(File::isDirectory);
-    for (File sub : subcarpetas) {
-        File[] archivos = sub.listFiles();
-        for (File archivo : archivos) {
-            if (archivo.getName().toLowerCase().endsWith("multas") || archivo.getName().toLowerCase().endsWith("multas.txt")) {
-                try (Scanner lector = new Scanner(archivo)) {
-                    String nombreArchivo = archivo.getName();
-                    String departamento = nombreArchivo.replace("_multas.txt", "")
-                                                       .replace("_multas", "")
-                                                       .replace("_", " ")
-                                                       .trim();
+    abb = new Arbolabb();
 
-                    if (lector.hasNextLine()) lector.nextLine(); // Saltar encabezado
+    for (File sub : carpeta.listFiles(File::isDirectory)) {
+        for (File archivo : sub.listFiles((f) -> f.getName().toLowerCase().endsWith("vehiculos.txt") ||
+                                              f.getName().toLowerCase().endsWith("vehiculos"))) {
+            try (Scanner lector = new Scanner(archivo)) {
+                lector.nextLine(); // saltar encabezado
+                String departamento = archivo.getName()
+                                             .replace("_vehiculos.txt", "")
+                                             .replace("_vehiculos", "")
+                                             .replace("_", " ")
+                                             .trim();
 
-                    while (lector.hasNextLine()) {
-                        String[] datos = lector.nextLine().split(",");
-                        if (datos.length == 4) {
-                            abb.insertar(departamento, datos[0], datos[1], datos[2], Integer.parseInt(datos[3]));
-                        }
-                    }
+                while (lector.hasNextLine()) {
+                    String linea = lector.nextLine();
+                    if (linea.isBlank()) continue;
+                    String[] datos = linea.split(",", -1);
+                    if (datos.length < 8) continue;
+
+                    String placa       = datos[0].trim();
+                    String dpi         = datos[1].trim();
+                    String nombre      = datos[2].trim();
+                    String marca       = datos[3].trim();
+                    String modelo      = datos[4].trim();
+                    String anio        = datos[5].trim();
+                    String multasStr   = datos[6].trim();
+                    String traspasosStr= datos[7].trim();
+
+                    abb.insertar(departamento,
+                                 placa,
+                                 dpi,
+                                 nombre,
+                                 marca,
+                                 modelo,
+                                 anio,
+                                 multasStr,
+                                 traspasosStr);
                 }
             }
         }
     }
+
     long fin = System.nanoTime();
-    JOptionPane.showMessageDialog(this, "Tiempo de carga en ABB: " + (fin - inicio) + " ns");
-    mostrarDesdeABB(); 
+    
+    JOptionPane.showMessageDialog(this, "Tiempo ABB: " + (fin - inicio) + " ns");
+    System.out.println("Insertando nodo: " ); 
+    mostrarDesdeABB();
+  
+
 }
 
     private void mostrarDesdeABB() {
@@ -88,45 +115,61 @@ public class Multas extends javax.swing.JFrame {
         modelo.setRowCount(0);
         ArrayList<String[]> lista = new ArrayList<>();
         abb.inOrden(abb.getRaiz(), lista);
+        
         for (String[] fila : lista) {
             modelo.addRow(fila);
         }
     }
 
      private void cargarDesdeArchivosAVL() throws FileNotFoundException {
-         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0);
-          avl = new Arbolavl(); // Reiniciar AVL
-        long inicio = System.nanoTime();
-        
-    File[] subcarpetas = carpeta.listFiles(File::isDirectory);
-    for (File sub : subcarpetas) {
-        File[] archivos = sub.listFiles();
-        for (File archivo : archivos) {
-            if (archivo.getName().toLowerCase().endsWith("multas") || archivo.getName().toLowerCase().endsWith("multas.txt")) {
-                try (Scanner lector = new Scanner(archivo)) {
-                    String nombreArchivo = archivo.getName();
-                    String departamento = nombreArchivo.replace("_multas.txt", "")
-                                                       .replace("_multas", "")
-                                                       .replace("_", " ")
-                                                       .trim();
+         configurarTablaVacia();
+    long inicio = System.nanoTime();
+    avl = new Arbolavl();
 
-                    if (lector.hasNextLine()) lector.nextLine(); // Saltar encabezado
+    for (File sub : carpeta.listFiles(File::isDirectory)) {
+        for (File archivo : sub.listFiles((f) -> f.getName().toLowerCase().endsWith("vehiculos.txt") ||
+                                              f.getName().toLowerCase().endsWith("vehiculos"))) {
+            try (Scanner lector = new Scanner(archivo)) {
+                lector.nextLine(); // saltar encabezado
+                String departamento = archivo.getName()
+                                             .replace("_vehiculos.txt", "")
+                                             .replace("_vehiculos", "")
+                                             .replace("_", " ")
+                                             .trim();
 
-                    while (lector.hasNextLine()) {
-                        String[] datos = lector.nextLine().split(",");
-                        if (datos.length == 4) {
-                            avl.insertar(departamento, datos[0], datos[1], datos[2], Integer.parseInt(datos[3]));
-                        }
-                    }
+                while (lector.hasNextLine()) {
+                    String linea = lector.nextLine();
+                    if (linea.isBlank()) continue;
+                    String[] datos = linea.split(",", -1);
+                    if (datos.length < 8) continue;
+
+                    String placa       = datos[0].trim();
+                    String dpi         = datos[1].trim();
+                    String nombre      = datos[2].trim();
+                    String marca       = datos[3].trim();
+                    String modelo      = datos[4].trim();
+                    String anio        = datos[5].trim();
+                    String multasStr   = datos[6].trim();
+                    String traspasosStr= datos[7].trim();
+
+                    avl.insertar(departamento,
+                                 placa,
+                                 dpi,
+                                 nombre,
+                                 marca,
+                                 modelo,
+                                 anio,
+                                 multasStr,
+                                 traspasosStr);
                 }
             }
         }
     }
+
     long fin = System.nanoTime();
-    JOptionPane.showMessageDialog(this, "Tiempo de carga en ABB: " + (fin - inicio) + " ns");
-    mostrarDesdeAVL(); 
-    }
+    JOptionPane.showMessageDialog(this, "Tiempo AVL: " + (fin - inicio) + " ns");
+    mostrarDesdeAVL();
+}
 
     private void mostrarDesdeAVL() {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
@@ -138,23 +181,20 @@ public class Multas extends javax.swing.JFrame {
         }
     }
     
-    public void agregarFila(String departamento, String placa, String fecha, String descripcion, int monto) {
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    modelo.addRow(new Object[]{departamento, placa, fecha, descripcion, monto});
-}
-     public void modificarFila(String originalPlaca, String nuevoDepto, String nuevaPlaca, String nuevaFecha, String nuevaDescripcion, int nuevoMonto) {
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    for (int i = 0; i < modelo.getRowCount(); i++) {
-        if (modelo.getValueAt(i, 1).toString().equals(originalPlaca)) {
-            modelo.setValueAt(nuevoDepto, i, 0);
-            modelo.setValueAt(nuevaPlaca, i, 1);
-            modelo.setValueAt(nuevaFecha, i, 2);
-            modelo.setValueAt(nuevaDescripcion, i, 3);
-            modelo.setValueAt(nuevoMonto, i, 4);
-            break;
-        }
-    }
-}
+        public void agregarFila(String departamento, String placa, String dpi, String nombre,
+                        String marca, String modelov, String anio, String multas, String traspasos) {
+    DefaultTableModel tabla = (DefaultTableModel) jTable1.getModel();
+    tabla.addRow(new Object[]{
+        departamento,
+        placa,
+        dpi,
+        nombre,
+        marca,
+        modelov,
+        anio,
+        multas,
+        traspasos
+    }); }
 
     public Arbolabb getAbb() {
     return abb;
@@ -195,13 +235,13 @@ public Arbolavl getAvl() {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Departamento", "Placa", "Fecha", "Descipcion", "Monto"
+                "Departamento", "Placa", "DPI", "Nombre", "Marca", "Modelov", "Año", "Multas", "Traspasos"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -212,8 +252,8 @@ public Arbolavl getAvl() {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,87 +395,106 @@ public Arbolavl getAvl() {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void ABBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABBActionPerformed
-         arbolActivo = "ABB";
+    
         long inicio = System.nanoTime();
-        
-        abb = new Arbolabb();
+        arbolActivo = "ABB";
+    
+    abb = new Arbolabb(); // Reiniciar el árbol
 
     File[] subcarpetas = carpeta.listFiles(File::isDirectory);
     for (File sub : subcarpetas) {
         File[] archivos = sub.listFiles();
         for (File archivo : archivos) {
-            if (archivo.getName().toLowerCase().endsWith("multas.txt")) {
+           if (archivo.getName().toLowerCase().endsWith("vehiculos.txt")) {
                 try (Scanner lector = new Scanner(archivo)) {
-                    
                     String nombreArchivo = archivo.getName();
-                    String departamento = nombreArchivo.replace("_multas.txt", "")
-                                                       .replace("_multas", "")
-                                                       .replace("_", " ")
-                                                       .trim();
+                    String departamento = nombreArchivo.replace("_vehiculos.txt", "")
+                                                        .replace("_vehiculos", "")
+                                                        .replace("_", " ")
+                                                        .trim();
+                    
+                     if (lector.hasNextLine()) lector.nextLine();
+  
+        while (lector.hasNextLine()) {
+           String[] datos = lector.nextLine().split(",", -1);
+                        if (datos.length >= 8) {
+                            String placa = datos[0].trim();
+                            String dpi = datos[1].trim();
+                            String nombre = datos[2].trim();
+                            String marca = datos[3].trim();
+                            String modelov = datos[4].trim();
+                            String anio = datos[5].trim();
+                            String multas = datos[6].trim();
+                            String traspasos = datos[7].trim();
 
-                    lector.nextLine(); 
-                  
-                    while (lector.hasNextLine()) {
-                        String[] datos = lector.nextLine().split(",");
-                        if (datos.length == 4) {
-                            String placa = datos[0];
-                            String fecha = datos[1];
-                            String descripcion = datos[2];
-                            int monto = Integer.parseInt(datos[3]);
-                            abb.insertar(departamento, placa, fecha, descripcion, monto);
-                        }
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error: " + archivo.getName());
-                }
-            }
+
+                abb.insertar(departamento, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
+            }String linea = lector.nextLine();
+System.out.println("Línea leída: " + linea); 
+        }
+    } catch (Exception e) {
+        System.out.println("Error en archivo: " + archivo.getName());
+    }
+}
         }
     }
 
     long fin = System.nanoTime();
-    long tiempo = fin - inicio;
-    JOptionPane.showMessageDialog(this, "Tiempo de carga en ABB: " + tiempo + " ns");
-    mostrarDesdeABB();
+    JOptionPane.showMessageDialog(this, "Tiempo de carga en ABB: " + (fin - inicio) + " ns");
+   System.out.println("Raíz del árbol: " + abb.getRaiz());
+   ArrayList<String[]> debugLista = new ArrayList<>();
+abb.inOrden(abb.getRaiz(), debugLista);
+System.out.println("Cantidad de registros en recorrido ABB: " + debugLista.size());
+
+   
+   mostrarDesdeABB();
+
     }//GEN-LAST:event_ABBActionPerformed
 
     private void AVLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AVLActionPerformed
           long inicio = System.nanoTime();
+    avl = new Arbolavl(); // Reinicia el árbol
 
     File[] subcarpetas = carpeta.listFiles(File::isDirectory);
     for (File sub : subcarpetas) {
         File[] archivos = sub.listFiles();
         for (File archivo : archivos) {
-            if (archivo.getName().toLowerCase().endsWith("multas.txt")) {
+            if (archivo.getName().toLowerCase().endsWith("vehiculos.txt")) {
                 try (Scanner lector = new Scanner(archivo)) {
-                    
                     String nombreArchivo = archivo.getName();
-                    String departamento = nombreArchivo.replace("_multas.txt", "")
-                                                       .replace("_multas", "")
-                                                       .replace("_", " ")
-                                                       .trim();
+                    String departamento = nombreArchivo.replace("_vehiculos.txt", "")
+                                                        .replace("_vehiculos", "")
+                                                        .replace("_", " ")
+                                                        .trim();
 
-                    lector.nextLine(); 
+                    if (lector.hasNextLine()) lector.nextLine(); // Saltar encabezado
+
                     while (lector.hasNextLine()) {
-                        String[] datos = lector.nextLine().split(",");
-                        if (datos.length == 4) {
-                            String placa = datos[0];
-                            String fecha = datos[1];
-                            String descripcion = datos[2];
-                            int monto = Integer.parseInt(datos[3]);
-                            avl.insertar(departamento,placa, fecha, descripcion, monto);
+                        String[] datos = lector.nextLine().split(",", -1);
+                        if (datos.length >= 8) {
+                            String placa = datos[0].trim();
+                            String dpi = datos[1].trim();
+                            String nombre = datos[2].trim();
+                            String marca = datos[3].trim();
+                            String modelov = datos[4].trim();
+                            String anio = datos[5].trim();
+                            String multas = datos[6].trim();
+                            String traspasos = datos[7].trim();
+
+                            avl.insertar(departamento, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("Error: " + archivo.getName());
+                    System.out.println("Error al procesar archivo: " + archivo.getName());
                 }
             }
         }
     }
 
     long fin = System.nanoTime();
-    long tiempo = fin - inicio;
-    JOptionPane.showMessageDialog(this, "Tiempo de carga en AVL: " + tiempo + " ns");
-    mostrarDesdeAVL();
+    JOptionPane.showMessageDialog(this, "Tiempo de carga en AVL: " + (fin - inicio) + " ns");
+    mostrarDesdeAVL(); 
+
     }//GEN-LAST:event_AVLActionPerformed
 
     private void RegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrosActionPerformed
@@ -509,14 +568,18 @@ if (fila != -1) {
          int fila = jTable1.getSelectedRow();
     if (fila != -1) {
         // Obtener datos de la fila seleccionada
-        String depto = jTable1.getValueAt(fila, 0).toString();
-        String placa = jTable1.getValueAt(fila, 1).toString();
-        String fecha = jTable1.getValueAt(fila, 2).toString();
-        String descripcion = jTable1.getValueAt(fila, 3).toString();
-        String monto = jTable1.getValueAt(fila, 4).toString();
+              String depto     = jTable1.getValueAt(fila, 0).toString();
+        String placa     = jTable1.getValueAt(fila, 1).toString();
+        String dpi       = jTable1.getValueAt(fila, 2).toString();
+        String nombre    = jTable1.getValueAt(fila, 3).toString();
+        String marca     = jTable1.getValueAt(fila, 4).toString();
+        String modelo    = jTable1.getValueAt(fila, 5).toString();
+        String anio      = jTable1.getValueAt(fila, 6).toString();
+        String multas    = jTable1.getValueAt(fila, 7).toString();
+        String traspasos = jTable1.getValueAt(fila, 8).toString();
 
         // Abrir ventana Modificar con los datos
-        Modificar mod = new Modificar(depto, placa, fecha, descripcion, monto);
+        Modificar mod = new Modificar(depto, placa, dpi, nombre, marca, modelo, anio, multas, traspasos);
         mod.setVisible(true);
     } else {
         JOptionPane.showMessageDialog(this, "Selecciona una fila primero.");

@@ -18,7 +18,7 @@ public class Inicio extends javax.swing.JFrame {
 
     public Inicio() {
         initComponents();
-       menu.setVisible(false);
+ 
     }
     /**
      * Creates new form Inicio
@@ -160,8 +160,8 @@ public class Inicio extends javax.swing.JFrame {
         if (folderResult == JFileChooser.APPROVE_OPTION) {
         Cseleccion = folderChooser.getSelectedFile();
             
-            seleccion.setVisible(false);
-            salir.setVisible(false);
+            seleccion.setVisible(true);
+            salir.setVisible(true);
             
             menu.setVisible(true);
 

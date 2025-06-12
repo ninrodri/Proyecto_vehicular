@@ -13,16 +13,19 @@ import java.util.ArrayList;
 public class Arbolabb {
     private Nodo raiz;
 
-     public void insertar(String depto, String placa, String fecha, String descripcion, int monto) {
-        raiz = insertarRec(raiz, depto, placa, fecha, descripcion, monto);
+     public void insertar(String depto, String placa, String dpi, String nombre,
+                         String marca, String modelov, String anio, String multas, String traspasos) {
+        System.out.println("Insertando placa: " + placa); 
+         raiz = insertarRec(raiz, depto, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
     }
 
-    private Nodo insertarRec(Nodo nodo, String depto, String placa, String fecha, String descripcion, int monto) {
-        if (nodo == null) return new Nodo(depto, placa, fecha, descripcion, monto);
+    private Nodo insertarRec(Nodo nodo, String depto, String placa, String dpi, String nombre,
+                             String marca, String modelov, String anio, String multas, String traspasos) {
+        if (nodo == null) return new Nodo(depto, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
         if (placa.compareTo(nodo.placa) < 0) {
-            nodo.izq = insertarRec(nodo.izq, depto, placa, fecha, descripcion, monto);
+            nodo.izq = insertarRec(nodo.izq, depto, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
         } else {
-            nodo.der = insertarRec(nodo.der, depto, placa, fecha, descripcion, monto);
+            nodo.der = insertarRec(nodo.der, depto, placa, dpi, nombre, marca, modelov, anio, multas, traspasos);
         }
         return nodo;
     }
@@ -33,22 +36,24 @@ public class Arbolabb {
 
     private Nodo eliminarRec(Nodo nodo, String placa) {
         if (nodo == null) return null;
-
         if (placa.compareTo(nodo.placa) < 0) {
             nodo.izq = eliminarRec(nodo.izq, placa);
         } else if (placa.compareTo(nodo.placa) > 0) {
             nodo.der = eliminarRec(nodo.der, placa);
         } else {
-            // Nodo encontrado
             if (nodo.izq == null) return nodo.der;
             if (nodo.der == null) return nodo.izq;
 
             Nodo sucesor = encontrarMinimo(nodo.der);
             nodo.placa = sucesor.placa;
             nodo.departamento = sucesor.departamento;
-            nodo.fecha = sucesor.fecha;
-            nodo.descripcion = sucesor.descripcion;
-            nodo.monto = sucesor.monto;
+            nodo.dpi = sucesor.dpi;
+            nodo.nombre = sucesor.nombre;
+            nodo.marca = sucesor.marca;
+            nodo.modelo = sucesor.modelo;
+            nodo.anio = sucesor.anio;
+            nodo.multas = sucesor.multas;
+            nodo.traspasos = sucesor.traspasos;
             nodo.der = eliminarRec(nodo.der, sucesor.placa);
         }
         return nodo;
@@ -62,7 +67,10 @@ public class Arbolabb {
     public void inOrden(Nodo nodo, ArrayList<String[]> lista) {
         if (nodo != null) {
             inOrden(nodo.izq, lista);
-            lista.add(new String[]{nodo.departamento, nodo.placa, nodo.fecha, nodo.descripcion, String.valueOf(nodo.monto)});
+            lista.add(new String[]{
+                nodo.departamento, nodo.placa, nodo.dpi, nodo.nombre,
+                nodo.marca, nodo.modelo, nodo.anio, nodo.multas, nodo.traspasos
+            });
             inOrden(nodo.der, lista);
         }
     }
